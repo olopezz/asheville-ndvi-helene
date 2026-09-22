@@ -1,0 +1,26 @@
+{
+  "type": "FeatureCollection",
+  "name": "swannanoa_river_valley_aoi",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Swannanoa River Valley Corridor",
+        "description": "Black Mountain, NC to the Swannanoa/French Broad confluence in Asheville (Biltmore Village). Bounding box used to clip NASA HLS scenes for NDVI analysis.",
+        "crs": "EPSG:4326"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-82.58, 35.55],
+            [-82.25, 35.55],
+            [-82.25, 35.65],
+            [-82.58, 35.65],
+            [-82.58, 35.55]
+          ]
+        ]
+      }
+    }
+  ]
+}

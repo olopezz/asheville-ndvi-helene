@@ -5,6 +5,25 @@ A geospatial analysis of vegetation/canopy loss in the Swannanoa River valley
 imagery, comparing conditions shortly before and after Hurricane Helene
 (landfall 2024-09-27).
 
+## Why this project
+
+<!-- If you have a personal/local tie to Asheville or Western NC, a
+     sentence here is worth more than anything else in this section. -->
+
+I came into this with a CS degree, a Biology minor, and some GIS training
+(ESRI/ArcGIS) from coursework and botanical fieldwork — but no prior
+hands-on experience with satellite or Earth observation data. I built this
+project to close that gap ahead of applying to NASA's EarthRISE Developers
+Academy: to prove to myself, not just claim on an application, that I can
+take a real disaster event, pull the actual NASA imagery, and turn it into
+a defensible, quantified result end to end.
+
+Hurricane Helene was the obvious choice of event: catastrophic,
+well-documented flooding in Buncombe County's river valleys, and exactly
+the kind of rapid-onset environmental change that satellite monitoring is
+uniquely suited to quantify at scale — the class of problem EarthRISE is
+built around.
+
 ## Background
 
 Helene's remnants dropped record rainfall on the Southern Appalachians in
@@ -83,11 +102,33 @@ wind damage.
 
 ![NDVI change histogram](outputs/figures/ndvi_change_histogram.png)
 
-### Stretch goal
+## Limitations & next steps
 
-Overlay USGS/NOAA post-storm flood extent or NC landslide inventory data
-on the ΔNDVI raster to separate flood-driven riparian loss from
-wind-driven canopy damage upslope.
+This is a two-scene snapshot, not a time series, and it's honest to be
+upfront about what that does and doesn't support:
+
+- **Single before/after pair.** A cloud-free Landsat pass wasn't available
+  in the two weeks immediately before landfall (every scene was 58%+
+  cloudy), so the pre-event baseline is from Aug 30 — about four weeks
+  before Helene. Normal late-summer phenology could account for a small
+  slice of the observed NDVI drop, not just storm damage.
+- **No ground truth.** The loss threshold (ΔNDVI < -0.15) is a reasonable
+  convention, not validated against field survey or high-resolution
+  post-storm aerial imagery of this specific corridor.
+- **Wind vs. flood damage aren't separated.** The river-channel loss band
+  and the diffuse hillside loss are visually distinguishable but not
+  quantified as separate categories.
+
+With more time, the next steps would be:
+
+1. **A short NDVI time series** (monthly composites through 2024–2025) to
+   separate the storm signal from normal seasonal variation and track
+   canopy recovery.
+2. **Overlay USGS/NOAA flood extent or NC landslide inventory data** on
+   the ΔNDVI raster to formally split flood-driven riparian loss from
+   wind-driven damage upslope.
+3. **Validate against higher-resolution imagery** (e.g., NAIP or
+   commercial post-storm aerials) for a subset of the corridor.
 
 ## Setup
 
@@ -115,12 +156,6 @@ notebooks/    Main analysis notebook
 data/         Downloaded/processed rasters (gitignored)
 outputs/      Exported figures
 ```
-
-## Background & motivation
-
-Built as a portfolio project to demonstrate applied Earth observation
-analysis — connecting a CS/Biology background and prior ESRI GIS training
-to satellite-based vegetation monitoring.
 
 ## License
 

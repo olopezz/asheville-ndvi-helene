@@ -54,7 +54,7 @@ if __name__ == "__main__":
     parser.add_argument("--out", default="data/raw")
     args = parser.parse_args()
 
-    earthaccess.login()  # prompts once, then reuses cached ~/.netrc credentials
+    earthaccess.login(persist=True)  # prompts once, then reuses cached ~/.netrc credentials
     granules = search_hls_granules(args.aoi, args.start, args.end, args.product, args.max_cloud)
     print(f"Found {len(granules)} granule(s) for {args.product} between {args.start} and {args.end}")
     for g in granules:

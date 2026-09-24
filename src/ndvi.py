@@ -40,8 +40,11 @@ def compute_ndvi(red_path: str, nir_path: str, fmask_path: str | None = None, ao
     ndvi = ndvi.where((nir + red) != 0)
 
     if fmask_path is not None:
-        fmask = read_band(fmask_path, aoi_bounds).astype("uint16")
-        bad = (fmask.values.astype("uint16") & BAD_PIXEL_MASK) != 0
+        # fillna(255) before casting: NaN (nodata/edge pixels) cast to an int type is
+        # undefined and can silently become 0 ("clear"), which would let bad pixels through.
+        # 255 has every flag bit set, so those pixels are correctly masked out instead.
+        fmask = read_band(fmask_path, aoi_bounds).fillna(255).astype("uint16")
+        bad = (fmask.values & BAD_PIXEL_MASK) != 0
         ndvi = ndvi.where(~bad)
 
     return ndvi.clip(-1, 1)

@@ -33,10 +33,17 @@ signal. See [`config/aoi_swannanoa.geojson`](config/aoi_swannanoa.geojson).
   a common 30 m grid, giving more frequent clear-sky revisits than Landsat
   alone — important for catching a cloud-free scene in the narrow pre/post
   storm windows.
-- **Pre-event:** clearest available scene, mid-Aug – Sept 26, 2024
-- **Post-event:** clearest available scene, Sept 28 – late Oct 2024
+- **Pre-event:** 2024-08-30 (HLS.L30.T17SLV, 17% cloud cover — the clearest
+  Landsat pass available between May and landfall; every scene in the two
+  weeks directly before Helene was 58%+ cloudy)
+- **Post-event:** 2024-10-09 (HLS.L30.T17SLV, 0% cloud cover, 12 days after
+  landfall)
 - **Bands used:** Red and Near-Infrared (NDVI), plus the Fmask quality band
   for cloud/cloud-shadow/snow masking.
+
+Both scenes are HLSL30 (Landsat 9) on the same MGRS tile, chosen
+deliberately to avoid cross-sensor NDVI differences between Landsat and
+Sentinel-2.
 
 Raw and processed imagery are not committed to this repo (see
 `.gitignore`) — they're large and fully reproducible via
@@ -57,6 +64,25 @@ Raw and processed imagery are not committed to this repo (see
 Full walkthrough in
 [`notebooks/01_ndvi_before_after.ipynb`](notebooks/01_ndvi_before_after.ipynb).
 
+## Results
+
+| | Pre-Helene (2024-08-30) | Post-Helene (2024-10-09) |
+|---|---|---|
+| Mean NDVI (AOI) | 0.81 | 0.74 |
+
+**11.5%** of pixels across the AOI show ΔNDVI < -0.15, the threshold used
+here for "notable canopy/vegetation loss."
+
+![Pre/post NDVI and difference map](outputs/figures/ndvi_before_after_diff.png)
+
+The difference map (right panel) shows a clear, continuous band of
+vegetation loss tracing the Swannanoa River channel itself — consistent
+with flood scouring and debris flows along the waterway — plus more
+diffuse, scattered loss across the surrounding hillsides, likely from
+wind damage.
+
+![NDVI change histogram](outputs/figures/ndvi_change_histogram.png)
+
 ### Stretch goal
 
 Overlay USGS/NOAA post-storm flood extent or NC landslide inventory data
@@ -74,8 +100,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # First run prompts for Earthdata credentials and caches them in ~/.netrc
-python src/search_download.py --start 2024-08-15 --end 2024-09-26 --max-cloud 15
-python src/search_download.py --start 2024-09-28 --end 2024-10-20 --max-cloud 15
+python src/search_download.py --start 2024-08-29 --end 2024-08-31 --max-cloud 20
+python src/search_download.py --start 2024-10-08 --end 2024-10-10 --max-cloud 20
 
 jupyter lab notebooks/01_ndvi_before_after.ipynb
 ```

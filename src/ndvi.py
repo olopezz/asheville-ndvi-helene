@@ -56,6 +56,6 @@ def align_to(reference, other):
 
 
 def ndvi_difference(pre_ndvi, post_ndvi):
-    """post - pre: negative values indicate vegetation/canopy loss."""
+    """post - pre: negative values indicate a decline in NDVI (possible vegetation loss)."""
     post_aligned = align_to(pre_ndvi, post_ndvi)
     return post_aligned - pre_ndvi

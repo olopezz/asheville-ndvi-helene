@@ -24,20 +24,20 @@ def plot_before_after_diff(pre_ndvi, post_ndvi, diff, titles=None, out_path=None
     return fig
 
 
-def plot_change_histogram(diff, loss_threshold=-0.15, out_path=None):
+def plot_change_histogram(diff, change_threshold=-0.15, out_path=None):
     values = np.asarray(diff).ravel()
     values = values[~np.isnan(values)]
-    loss_pct = (values < loss_threshold).mean() * 100
+    pct_below = (values < change_threshold).mean() * 100
 
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.hist(values, bins=100, color="#4a7c59")
-    ax.axvline(loss_threshold, color="crimson", linestyle="--",
-               label=f"Loss threshold ({loss_threshold})")
+    ax.axvline(change_threshold, color="crimson", linestyle="--",
+               label=f"Change threshold ({change_threshold})")
     ax.set_xlabel("Δ NDVI (post - pre)")
     ax.set_ylabel("Pixel count")
-    ax.set_title(f"NDVI Change Distribution — {loss_pct:.1f}% of pixels show notable canopy loss")
+    ax.set_title(f"NDVI Change Distribution — {pct_below:.1f}% of valid pixels with ΔNDVI < {change_threshold}")
     ax.legend()
 
     if out_path:
         fig.savefig(out_path, dpi=200, bbox_inches="tight")
-    return fig, loss_pct
+    return fig, pct_below
